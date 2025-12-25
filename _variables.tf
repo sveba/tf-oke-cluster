@@ -64,11 +64,11 @@ variable "k8s_node_shape" {
 variable "vcn_private_subnet_cidr" {
   description = "VCN Private Subnet CIDR"
   type        = string
-  default     = "10.0.0.0/24"
+  default     = "10.0.1.0/24"
 }
 
 variable "vcn_public_subnet_cidr" {
   description = "VCN Public Subnet CIDR"
   type        = string
-  default     = "10.1.0.0/24"
+  default     = "10.0.0.0/24"
 }
