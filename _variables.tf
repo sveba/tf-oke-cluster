@@ -60,3 +60,15 @@ variable "k8s_node_shape" {
   type        = string
   default     = "VM.Standard.A1.Flex"
 }
+
+variable "vcn_private_subnet_cidr" {
+  description = "VCN Private Subnet CIDR"
+  type        = string
+  default     = "10.0.0.0/24"
+}
+
+variable "vcn_public_subnet_cidr" {
+  description = "VCN Public Subnet CIDR"
+  type        = string
+  default     = "10.1.0.0/24"
+}
