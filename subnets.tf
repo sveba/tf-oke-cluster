@@ -16,7 +16,9 @@ resource "oci_core_subnet" "vcn_public_subnet" {
   vcn_id            = module.vcn.vcn_id
   cidr_block        = var.vcn_public_subnet_cidr
   route_table_id    = module.vcn.ig_route_id
-  security_list_ids = [oci_core_security_list.public_subnet_sl.id]
+  security_list_ids = [
+    oci_core_security_list.public_subnet_sl.id,
+    oci_core_security_list.nlb_public_subnet_sl.id]
   display_name      = "k8s-public-subnet"
 }
 
@@ -75,6 +77,29 @@ resource "oci_core_security_list" "public_subnet_sl" {
     }
   }
 }
+
+# for addtional network load balancer ports (like 80 and 443, or lets say a tcp 3000)
+# if you need more ports, you can pass them over variables and use dynamic blocks here
+resource "oci_core_security_list" "nlb_public_subnet_sl" {
+  compartment_id = var.compartment_id
+  vcn_id         = module.vcn.vcn_id
+  display_name   = "nlb-k8s-public-subnet-sl"
+
+  dynamic "ingress_security_rules" {
+    for_each = var.nlb_public_ports
+    content {
+      stateless   = false
+      source      = "0.0.0.0/0"
+      source_type = "CIDR_BLOCK"
+      protocol    = "6"
+      tcp_options {
+        min = ingress_security_rules.value
+        max = ingress_security_rules.value
+      }
+    }
+  }
+}
+
 
 # for network load balancer
 # https://docs.oracle.com/en-us/iaas/Content/ContEng/Tasks/contengcreatingnetworkloadbalancers.htm

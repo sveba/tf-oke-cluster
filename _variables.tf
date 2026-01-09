@@ -72,3 +72,9 @@ variable "vcn_public_subnet_cidr" {
   type        = string
   default     = "10.0.0.0/24"
 }
+
+variable "nlb_public_ports" {
+  description = "NLB public ports to open in the security list"
+  type        = list(number)
+  default     = [80, 443]
+}
