@@ -8,4 +8,5 @@ module "vcn" {
   create_internet_gateway      = true
   create_nat_gateway           = true
   create_service_gateway       = true
+  tenancy_id                   = var.compartment_id
 }
